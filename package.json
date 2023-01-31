@@ -1,0 +1,14 @@
+{
+  "name": "clock-captcha",
+  "version": "1.0.0",
+  "description": "CAPTCHA delivery service for web pages.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "CAPTCHA"
+  ],
+  "author": "OutOfBounds",
+  "license": "MIT"
+}
