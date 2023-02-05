@@ -47,7 +47,7 @@ function setClock(canvas: HTMLCanvasElement, time:number) {
 export function generateCaptcha(): number {
     let time : number = Math.trunc(Math.random() * (2*24*60*60));
 
-    let captchaContainer: HTMLElement = (document.getElementById('clock-captcha'));
+    let captchaContainer: HTMLElement | null = (document.getElementById('clock-captcha'));
     //check if element exists
     containerDressing(captchaContainer);
 
