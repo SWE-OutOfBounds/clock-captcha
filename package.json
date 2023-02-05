@@ -1,6 +1,6 @@
 {
   "name": "clock-captcha",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CAPTCHA delivery service for web pages.",
   "main": "dist/index.js",
   "scripts": {
