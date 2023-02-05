@@ -1,1 +1,1 @@
-export {sayHello, sayGoodbye} from './hello-world'
+export { generateCaptcha } from './captcha-module-generator';

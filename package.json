@@ -10,5 +10,8 @@
     "CAPTCHA"
   ],
   "author": "OutOfBounds",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "canvg": "^4.0.1"
+  }
 }
