@@ -29,15 +29,11 @@ function setClock(canvas, time) {
       <path class="minute-arm" d="M300.5 298V67" fill="none" fill-rule="evenodd" stroke="black" stroke-width="11" stroke-miterlimit="10" />
       <circle class="sizing-box" cx="300" cy="300" r="253.9" fill="none" />
     </g>
-    <g id="second" style="transform-origin: 300px 300px; transition: transform 0.5s ease-in-out; transform: rotate(` + secRotation + `);">
-      <path class="second-arm" d="M300.5 350V55" fill="none" fill-rule="evenodd" stroke="black" stroke-width="4"  stroke-miterlimit="10" />
-      <circle class="sizing-box" cx="300" cy="300" r="253.9" fill="none"/>
-    </g>
-    <line id="line" x1="50" y1="150" x2="1000" y2="600" stroke="black" stroke-width="7" />
-    <line id="line" x1="200" y1="100" x2="300" y2="500" stroke="black" stroke-width="7"/>
-    <line id="line" x1="1000" y1="50" x2="50" y2="500" stroke="black" stroke-width="7"/>
-    <line id="line" x1="100" y1="250" x2="500" y2="450" stroke="black" stroke-width="7"/>
-    <line id="line" x1="60" y1="300" x2="900" y2="50" stroke="black" stroke-width="7"/>
+    <line id="line" x1="50" y1="150" x2="1000" y2="600" stroke="black" stroke-width="2" />
+    <line id="line" x1="200" y1="100" x2="300" y2="500" stroke="black" stroke-width="2"/>
+    <line id="line" x1="1000" y1="50" x2="50" y2="500" stroke="black" stroke-width="2"/>
+    <line id="line" x1="100" y1="250" x2="500" y2="450" stroke="black" stroke-width="2"/>
+    <line id="line" x1="60" y1="300" x2="900" y2="50" stroke="black" stroke-width="2"/>
   </svg>`);
     if (v)
         v.start();
@@ -48,9 +44,15 @@ function generateCaptcha() {
     let captchaContainer = (document.getElementById('clock-captcha'));
     //check if element exists
     (0, stylist_1.containerDressing)(captchaContainer);
+    let title = document.createElement("p");
+    title.textContent = "Inserisci l'orario rappresentato dall'orologio";
+    (0, stylist_1.titleDressing)(title);
+    captchaContainer.appendChild(title);
+    let container = document.createElement('div');
+    (0, stylist_1.bodyDresser)(container);
     let canvas = document.createElement('canvas');
     (0, stylist_1.canvasDressing)(canvas);
-    captchaContainer.appendChild(canvas);
+    container.appendChild(canvas);
     let inputContainer = document.createElement('div');
     let hoursInput = document.createElement('input');
     hoursInput.setAttribute("type", "text");
@@ -67,7 +69,8 @@ function generateCaptcha() {
     secondsInput.setAttribute("maxlength", "2");
     (0, stylist_1.inputDressing)(secondsInput);
     inputContainer.appendChild(secondsInput);
-    captchaContainer.appendChild(inputContainer);
+    container.appendChild(inputContainer);
+    captchaContainer.appendChild(container);
     setClock(canvas, time);
     return time;
 }
