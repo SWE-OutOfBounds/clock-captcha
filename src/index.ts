@@ -1,1 +1,1 @@
-export { generateCaptcha } from './captcha-module-generator';
+export { captchaModule } from './captchaModule';
