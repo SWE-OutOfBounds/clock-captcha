@@ -38,11 +38,11 @@ class captchaModule {
                     <path class="minute-arm" d="M300.5 298V67" fill="none" fill-rule="evenodd" stroke="black" stroke-width="11" stroke-miterlimit="10" />
                     <circle class="sizing-box" cx="300" cy="300" r="253.9" fill="none" />
                 </g>
-                <line id="line" x1="50" y1="150" x2="1000" y2="600" stroke="black" stroke-width="5" />
-                <line id="line" x1="200" y1="100" x2="300" y2="500" stroke="black" stroke-width="5"/>
-                <line id="line" x1="1000" y1="50" x2="50" y2="500" stroke="black" stroke-width="5"/>
-                <line id="line" x1="100" y1="250" x2="500" y2="450" stroke="black" stroke-width="5"/>
-                <line id="line" x1="60" y1="300" x2="900" y2="50" stroke="black" stroke-width="5"/>
+                <line id="line" x1="50" y1="150" x2="1000" y2="600" stroke="black" stroke-width="7" />
+                <line id="line" x1="200" y1="100" x2="300" y2="500" stroke="black" stroke-width="7"/>
+                <line id="line" x1="1000" y1="50" x2="50" y2="500" stroke="black" stroke-width="7"/>
+                <line id="line" x1="100" y1="250" x2="500" y2="450" stroke="black" stroke-width="7"/>
+                <line id="line" x1="60" y1="300" x2="900" y2="50" stroke="black" stroke-width="7"/>
             </svg>`);
         if (v) {
             v.start();
@@ -89,7 +89,7 @@ class captchaModule {
                 let hours = +this._userInputElement.value.split(":")[0];
                 let minutes = +this._userInputElement.value.split(":")[1];
                 if (hours > 24 || minutes > 59) {
-                    this._title.textContent = "Double check your inputt!";
+                    this._title.textContent = "Double check your input!";
                     this._userInputElement.style.border = "1px solid red";
                 }
                 else {
