@@ -1,1 +1,1 @@
-export { captchaModule } from './captchaModule';
+export * from './captchaModule';
