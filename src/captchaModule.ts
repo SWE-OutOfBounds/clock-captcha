@@ -1,57 +1,158 @@
-import { Canvg } from "canvg";
-
 import * as stylist from "./stylist"
 
-export class captchaModule {
-    private _moduleBody = document.createElement('div');
-    private _userInputElement = document.createElement('input');
-    private _checkButtonElement = document.createElement('button');
-    private _canvas = document.createElement('canvas');
-    private _title = document.createElement('p');
 
-    private _timeInSec: number = Math.trunc(Math.random() * (12 * 60 * 60));
-    private _status: number = 0;
-    private _errors: Array<string> = [];
+interface absClockCAPTCHA {
+    draw(): void;
+    addButtonListener(fun: EventListener);
+    inject(container: HTMLElement | null): void;
 
-    private canvasInit() {
-        let minRotation: number = (360 / 60) * (Math.trunc(this._timeInSec / 60) % 60); 
-        let hrRotation: number = (360 / 12) * (Math.trunc(this._timeInSec / 3600) % 12) + (360/12/60 * (Math.trunc(this._timeInSec / 60) % 60)) ;
+    reset(): void;
 
-        const ctx = this._canvas ? this._canvas.getContext('2d') : null;
+    getSeed(): String;
+    getInput(): String;
+    setTitle(title: string): void;
+}
 
-        let v = null;
-        if (ctx) v = Canvg.fromString(ctx, 
-            `<svg id="clock" xmlns="http://www.w3.org/2000/svg" width="100" height = "100" viewBox="0 0 580 580">
-                <g id="face">
-                    <circle class="circle" cx="300" cy="300" r="253.9" fill="white" fill-rule="evenodd" stroke="black" stroke-width="9" stroke-miterlimit="10" />
-                    <path class="hour-marks" fill="none" stroke="#000" stroke-width="9" stroke-miterlimit="10"
-                        d="M300.5 94V61M506 300.5h32M300.5 506v33M94 300.5H60M411.3 107.8l7.9-13.8M493 190.2l13-7.4M492.1 411.4l16.5 9.5M411 492.3l8.9 15.3M189 492.3l-9.2 15.9M107.7 411L93 419.5M107.5 189.3l-17.1-9.9M188.1 108.2l-9-15.6" />
-                    <circle class="mid-circle" cx="300" cy="300" r="16.2" fill="black" />
-                </g>
-                <g id="hour" style="transform-origin: 300px 300px; transition: transform 0.5s ease-in-out; transform: rotate(`+ hrRotation + `);">
-                    <path class="hour-arm" d="M300.5 298V142" fill="none" fill-rule="evenodd" stroke="black" stroke-width="17" stroke-miterlimit="10" />
-                    <circle class="sizing-box" cx="300" cy="300" r="253.9" fill="none" />
-                </g>
-                <g id="minute" style="transform-origin: 300px 300px; transition: transform 0.5s ease-in-out; transform: rotate(`+ minRotation + `);">
-                    <path class="minute-arm" d="M300.5 298V67" fill="none" fill-rule="evenodd" stroke="black" stroke-width="11" stroke-miterlimit="10" />
-                    <circle class="sizing-box" cx="300" cy="300" r="253.9" fill="none" />
-                </g>
-                <line id="line" x1="50" y1="150" x2="1000" y2="600" stroke="black" stroke-width="5" />
-                <line id="line" x1="200" y1="100" x2="300" y2="500" stroke="black" stroke-width="5"/>
-                <line id="line" x1="1000" y1="50" x2="50" y2="500" stroke="black" stroke-width="5"/>
-                <line id="line" x1="100" y1="250" x2="500" y2="450" stroke="black" stroke-width="5"/>
-                <line id="line" x1="60" y1="300" x2="900" y2="50" stroke="black" stroke-width="5"/>
-            </svg>`);
-        if (v) {
-            v.start();
-            this._canvas.click();
-        }else {
-            this._status = 3;
-            this._errors.push("Errors on Canvg.fromStrings");
-        }
+export class ClockCAPTCHA implements absClockCAPTCHA {
+
+    constructor() {
+        this._canvas.id = "mainContainer";
+        this.moduleBuild();
+        this.draw();
     }
 
-    private moduleBuild() {
+    /**
+     * Disegna un orologio analogico all'interno del canvas nell'orario rappresentato dal seed generato casualmente
+     * Inizializza il campo dati _seed
+     */
+    public draw(): void {
+        let hours = 3, minutes = 23;
+        // Otteniamo il contesto del canvas
+        const ctx = this._canvas.getContext('2d');
+        const width = this._canvas.width;
+        const height = this._canvas.height;
+
+        // Calcoliamo le posizioni delle lancette
+        const hourAngle = (hours % 12) * Math.PI / 6;
+        const minuteAngle = minutes * Math.PI / 30;
+
+        // Disegna il quadrante dell'orologio
+        ctx.clearRect(0, 0, width, height);
+        ctx.beginPath();
+        ctx.arc(width / 2, height / 2, width / 2 - 10, 0, 2 * Math.PI);
+        ctx.stroke();
+
+        //Disegna i tick delle ore
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+        for (let i = 0; i < 12; i++) {
+            ctx.rotate(Math.PI / 6);
+            ctx.beginPath();
+            ctx.moveTo(0, -width / 2 + 10);
+            ctx.lineTo(0, -width / 2 + 15);
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        //Disegna i tick dei minuti
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+        for (let i = 0; i < 60; i++) {
+            ctx.rotate(Math.PI / 30);
+            ctx.beginPath();
+            ctx.moveTo(0, -width / 2 + 10);
+            ctx.lineTo(0, -width / 2 + 13);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        // Disegna la lancetta delle ore
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+        ctx.rotate(hourAngle);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -width / 4);
+        ctx.stroke();
+        ctx.restore();
+
+        // Disegna la lancetta dei minuti
+        ctx.save();
+        ctx.translate(width / 2, height / 2);
+        ctx.rotate(minuteAngle);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, -width / 3);
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    /**
+    * Aggiunge un ascoltatore per il click del pulsante.
+    *
+    * @param {EventListener} fun - La funzione da eseguire quando il pulsante viene cliccato.
+    * @returns {boolean} true se il sistema non si trova in uno stato di errore, false altrimenti.
+    */
+    public addButtonListener(fun: EventListener): boolean {
+        this._button.addEventListener('click', fun);
+        return !this._errorFlag;
+    }
+
+    /**
+    * Aggiunge il corpo del modulo al contenitore specificato.
+    * 
+    * @param {HTMLElement | null} container - Il contenitore a cui aggiungere il corpo del modulo.
+    * @returns {boolean} true se l'iniezione è avvenuta con successo, false altrimenti.
+    */
+    public inject(container: HTMLElement | null): boolean {
+        if (container) {
+            container.appendChild(this._moduleBody);
+        } else {
+            this._errorFlag = true;
+            this._errorLog.push("No container given");
+        }
+        return !this._errorFlag;
+    }
+
+    /**
+     * Resetta il contenuto dell'orologio e aggiorna la parte visiva
+     */
+    public reset(): void {
+
+    }
+
+    /**
+     * Gettter del seed generato in fase di costruzione dal modulo da usare nel validator
+     * 
+     * @returns {String} seed generato dal modulo
+     */
+    public getSeed(): String {
+        return this._seed;
+    }
+
+    /**
+     * Gettter dell'input inserito nel modulo
+     * 
+     * @returns {String} Valore presente all'interno del campo d'inserimento del modulo
+     */
+    public getInput(): String {
+        return this._input.value;
+    }
+
+    /**
+     * Setter per il titolo del modulo
+     * 
+     * @param {string} title nuovo titolo per il modulo di test 
+     */
+    public setTitle(title: string): void {
+        this._title.innerHTML = title;
+    }
+
+    /**
+     * Costruzione della parte visiva del modulo e inizializzazione del suo comportamento di base
+     */
+    private moduleBuild(): void {
         let rightColumn: HTMLElement = document.createElement("div");
         let inputContainer: HTMLElement = document.createElement('div');
 
@@ -59,67 +160,107 @@ export class captchaModule {
         stylist.canvasDressing(this._canvas);
         stylist.titleDressing(this._title);
         this._title.textContent = "Tell the time!";
-        stylist.inputDressing(this._userInputElement);
-        this._userInputElement.placeholder = "00:00";
-        this._userInputElement.maxLength = 5;
-        stylist.buttonDressing(this._checkButtonElement);
-        this._checkButtonElement.type = "button";
-        this._checkButtonElement.textContent = "CHECK";
+        stylist.inputDressing(this._input);
+        this._input.placeholder = "00:00";
+        this._input.maxLength = 5;
+        stylist.buttonDressing(this._button);
+        this._button.type = "button";
+        this._button.textContent = "CHECK";
         stylist.rightColumnDressing(rightColumn);
         stylist.inputContainerDressing(inputContainer);
 
-        inputContainer.appendChild(this._userInputElement);
-        inputContainer.appendChild(this._checkButtonElement);
+        inputContainer.appendChild(this._input);
+        inputContainer.appendChild(this._button);
 
         rightColumn.appendChild(this._title);
         rightColumn.appendChild(inputContainer);
 
         this._moduleBody.appendChild(this._canvas);
         this._moduleBody.appendChild(rightColumn);
+
+        this.moduleInit();
     }
 
-    private addEventListeners() : void{
-        this._checkButtonElement.addEventListener('click', e => {
-            if(this._userInputElement.value.length == 0){
+    /**
+     * Inizializzazione del comportamento di base del modulo
+     */
+    private moduleInit(): void {
+        this._button.addEventListener('click', e => {
+            if (this._input.value.length == 0) {
                 this._title.textContent = "Use the input box above!"
-                this._userInputElement.style.border = "1px solid red";
-            }else if(this._userInputElement.value.length<5){
+                this._input.style.border = "1px solid red";
+            } else if (this._input.value.length < 5) {
                 this._title.textContent = "Double check your input!";
-                this._userInputElement.style.border = "1px solid red";               
-            }else{
-                let hours : number = +this._userInputElement.value.split(":")[0];
-                let minutes : number = +this._userInputElement.value.split(":")[1];
-                if(hours>24 || minutes>59){
+                this._input.style.border = "1px solid red";
+            } else {
+                let hours: number = +this._input.value.split(":")[0];
+                let minutes: number = +this._input.value.split(":")[1];
+                if (hours > 24 || minutes > 59) {
                     this._title.textContent = "Double check your inputt!";
-                    this._userInputElement.style.border = "1px solid red"; 
-                }else{
-                    if(hours==(Math.trunc(this._timeInSec / 3600) % 12) && minutes==(Math.trunc(this._timeInSec / 60) % 60)){
+                    this._input.style.border = "1px solid red";
+                } else {
+                    if (true) {
                         this._title.textContent = "You are a clever human!";
-                        this._userInputElement.style.display = "none";
-                        this._checkButtonElement.style.display = "none";
-                        this._status=1;
+                        this._input.style.display = "none";
+                        this._button.style.display = "none";
+                        this._errorFlag = true;
                     }
                 }
             }
         })
     }
 
-    constructor() {
-        this.canvasInit();
-        this.moduleBuild();
-        this.addEventListeners();
+
+    private _seed: String;
+
+    private _errorLog: Array<string>;
+    private _errorFlag: boolean = false;
+
+    public _canvas: HTMLCanvasElement = document.createElement('canvas');
+    private _moduleBody: HTMLElement = document.createElement('div');
+    private _button: HTMLButtonElement = document.createElement('button');
+    private _input: HTMLInputElement = document.createElement('input');
+    private _title: HTMLElement = document.createElement('p');
+}
+export class Decorator implements absClockCAPTCHA{
+    constructor(component : absClockCAPTCHA){
+        this._component = component;
+    }    
+    
+    public draw(): void {
+        this._component.draw();
+    }
+    public addButtonListener(fun: EventListener) {
+        this._component.addButtonListener(fun);
+    }
+    public inject(container: HTMLElement | null): void {
+        this._component.inject(container);
+    }
+    public reset(): void {
+        this._component.reset();
+    }
+    public getSeed(): String {
+        return this._component.getSeed();
+    }
+    public getInput(): String {
+        return this._component.getInput();
+    }
+    public setTitle(title: string): void {
+        this._component.setTitle(title);
     }
 
-    public show(container: HTMLElement | null): void {
-        if (container)
-            container.appendChild(this._moduleBody);
-        else {
-            this._status = 2;
-            this._errors.push("No container given");
-        }
+    protected _component : absClockCAPTCHA;
+}
+
+export class ShapesDecorator extends Decorator{
+    constructor(component : absClockCAPTCHA, shapesPresence : number){
+        super(component);
+        this._shapePresence = shapesPresence;
     }
 
-    public isHuman() : boolean{
-        return this._status==1;
+    public draw(): void {
+        
     }
+
+    private _shapePresence : number;
 }
