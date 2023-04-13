@@ -1,1 +1,2 @@
-export * from './captchaModule';
+export { Decorator } from "./Decorator";
+export { ClockCAPTCHA } from "./ClockCAPTCHA";

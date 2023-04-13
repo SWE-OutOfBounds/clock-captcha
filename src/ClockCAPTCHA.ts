@@ -1,23 +1,7 @@
-import * as stylist from "./stylist";
+import { ClockCAPTCHAInterface } from './ClockCAPTCHAInterface';
+import * as stylist from './stylist';
 
-import { Sha256 } from '@aws-crypto/sha256-js';
-import glfx from 'glfx';
-import { p5 } from 'p5';
-
-interface absClockCAPTCHA {
-    draw(): void;
-    addButtonListener(fun: EventListener);
-    inject(container: HTMLElement | null): void;
-
-    reset(): void;
-
-    getSeed(): String;
-    getInput(): String;
-    getCanvas(): HTMLCanvasElement;
-    setTitle(title: string): void;
-}
-
-export class ClockCAPTCHA implements absClockCAPTCHA {
+export class ClockCAPTCHA implements ClockCAPTCHAInterface {
 
     constructor() {
         this._canvas.id = "mainContainer";
@@ -243,93 +227,4 @@ export class ClockCAPTCHA implements absClockCAPTCHA {
     private _button: HTMLButtonElement = document.createElement('button');
     private _input: HTMLInputElement = document.createElement('input');
     private _title: HTMLElement = document.createElement('p');
-}
-export class Decorator implements absClockCAPTCHA {
-    constructor(component: absClockCAPTCHA) {
-        this._component = component;
-    }
-
-    public draw(): void {
-        this._component.draw();
-    }
-    public addButtonListener(fun: EventListener) {
-        this._component.addButtonListener(fun);
-    }
-    public inject(container: HTMLElement | null): void {
-        this._component.inject(container);
-    }
-    public reset(): void {
-        this._component.reset();
-    }
-    public getSeed(): String {
-        return this._component.getSeed();
-    }
-    public getInput(): String {
-        return this._component.getInput();
-    }
-    public getCanvas(): HTMLCanvasElement {
-        return this._component.getCanvas();
-    }
-    public setTitle(title: string): void {
-        this._component.setTitle(title);
-    }
-
-    protected _component: absClockCAPTCHA;
-}
-
-export class ShapesDecorator extends Decorator {
-    constructor(component: absClockCAPTCHA, shapesPresence: number) {
-        super(component);
-        //component() => component.draw()
-        this._shapePresence = shapesPresence;
-        this.draw();
-        //this.draw()
-    }
-
-    public draw(): void {
-        const ctx = this._component.getCanvas().getContext('2d');
-        const width = this._component.getCanvas().width;
-        const height = this._component.getCanvas().height;
-
-        // Crea un'array di forme geometriche possibili
-        const shapes = ['square', 'circle', 'triangle'];
-
-        // Disegna il numero specificato di forme casuali
-        for (let i = 0; i < this._shapePresence; i++) {
-            // Scegli una forma casuale dall'array
-            const shape = shapes[Math.floor(Math.random() * shapes.length)];
-
-            // Genera una posizione e una rotazione casuali
-            const x = Math.random() * width;
-            const y = Math.random() * height;
-            const angle = Math.random() * Math.PI * 2;
-            const size = Math.random() * 40 + 10;// dimensione tra 10 e 50 pixel
-
-            // Disegna la forma nella posizione e rotazione specificate
-            ctx.save();
-            ctx.translate(x, y);
-            ctx.rotate(angle);
-            switch (shape) {
-                case 'square':
-                    ctx.strokeRect(-size / 2, -size / 2, size, size);
-                    break;
-                case 'circle':
-                    ctx.beginPath();
-                    ctx.arc(0, 0, size / 2, 0, 2 * Math.PI);
-                    ctx.stroke();
-                    break;
-                case 'triangle':
-                    ctx.beginPath();
-                    ctx.moveTo(-size / 2, size / 2);
-                    ctx.lineTo(size / 2, size / 2);
-                    ctx.lineTo(0, -size / 2);
-                    ctx.lineTo(-size, size);
-                    ctx.stroke();
-                    break;
-            }
-            ctx.restore();
-        }
-    }
-
-    private _shapePresence: number;
 }
