@@ -1,83 +1,19 @@
-import { ClockCAPTCHAInterface } from './ClockCAPTCHAInterface';
 import * as stylist from './stylist';
+export class ClockCAPTCHA {
 
-export class ClockCAPTCHA implements ClockCAPTCHAInterface {
-
-    constructor() {
+    constructor(image_src: string, token: string) {
         this._canvas.id = "mainContainer";
+
+        const aux = this._canvas.getContext('2d');
+        var destinationImage = new Image;
+
+        destinationImage.onload = function () {
+          aux?.drawImage(destinationImage, 0, 0, 100, 100);
+        };
+        
+        destinationImage.src = image_src;
+
         this.moduleBuild();
-        this.draw();
-    }
-
-    /**
-     * Disegna un orologio analogico all'interno del canvas nell'orario rappresentato dal seed generato casualmente
-     * Inizializza il campo dati _seed
-     */
-    public draw(): void {
-        let hours = Math.floor(Math.random() * 13), minutes = Math.floor(Math.random() * 60);
-        this._seed = this.getSHA256Hash(hours.toString() + minutes.toString()).toString();
-        // console.log(this._seed);
-        // console.log(hours.toString() + minutes.toString())
-        // console.log(this.cyrb53("556").toString());
-        // Otteniamo il contesto del canvas
-        const ctx = this._canvas.getContext('2d');
-        const width = this._canvas.width;
-        const height = this._canvas.height;
-
-        // Calcoliamo le posizioni delle lancette
-        const hourAngle = (hours % 12) * Math.PI / 6;
-        const minuteAngle = minutes * Math.PI / 30;
-
-        // Disegna il quadrante dell'orologio
-        ctx.clearRect(0, 0, width, height);
-        ctx.beginPath();
-        ctx.arc(width / 2, height / 2, width / 2 - 10, 0, 2 * Math.PI);
-        ctx.stroke();
-
-        //Disegna i tick delle ore
-        ctx.save();
-        ctx.translate(width / 2, height / 2);
-        for (let i = 0; i < 12; i++) {
-            ctx.rotate(Math.PI / 6);
-            ctx.beginPath();
-            ctx.moveTo(0, -width / 2 + 10);
-            ctx.lineTo(0, -width / 2 + 15);
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
-        ctx.restore();
-
-        //Disegna i tick dei minuti
-        ctx.save();
-        ctx.translate(width / 2, height / 2);
-        for (let i = 0; i < 60; i++) {
-            ctx.rotate(Math.PI / 30);
-            ctx.beginPath();
-            ctx.moveTo(0, -width / 2 + 10);
-            ctx.lineTo(0, -width / 2 + 13);
-            ctx.stroke();
-        }
-        ctx.restore();
-
-        // Disegna la lancetta delle ore
-        ctx.save();
-        ctx.translate(width / 2, height / 2);
-        ctx.rotate(hourAngle);
-        ctx.beginPath();
-        ctx.moveTo(0, -5);
-        ctx.lineTo(0, -width / 4);
-        ctx.stroke();
-        ctx.restore();
-
-        // Disegna la lancetta dei minuti
-        ctx.save();
-        ctx.translate(width / 2, height / 2);
-        ctx.rotate(minuteAngle);
-        ctx.beginPath();
-        ctx.moveTo(0, -5);
-        ctx.lineTo(0, -width / 3);
-        ctx.stroke();
-        ctx.restore();
     }
 
     /**
@@ -86,9 +22,8 @@ export class ClockCAPTCHA implements ClockCAPTCHAInterface {
     * @param {EventListener} fun - La funzione da eseguire quando il pulsante viene cliccato.
     * @returns {boolean} true se il sistema non si trova in uno stato di errore, false altrimenti.
     */
-    public addButtonListener(fun: EventListener): boolean {
+    public addButtonListener(fun: EventListener): void {
         this._button.addEventListener('click', fun);
-        return !this._errorFlag;
     }
 
     /**
@@ -98,13 +33,10 @@ export class ClockCAPTCHA implements ClockCAPTCHAInterface {
     * @returns {boolean} true se l'iniezione è avvenuta con successo, false altrimenti.
     */
     public inject(container: HTMLElement | null): boolean {
-        if (container) {
+        if (container)
             container.appendChild(this._moduleBody);
-        } else {
-            this._errorFlag = true;
-            this._errorLog.push("No container given");
-        }
-        return !this._errorFlag;
+        else return false;
+        return true;
     }
 
     /**
@@ -119,8 +51,8 @@ export class ClockCAPTCHA implements ClockCAPTCHAInterface {
      * 
      * @returns {String} seed generato dal modulo
      */
-    public getSeed(): String {
-        return this._seed;
+    public getToken(): String {
+        return this._token;
     }
 
     /**
@@ -130,10 +62,6 @@ export class ClockCAPTCHA implements ClockCAPTCHAInterface {
      */
     public getInput(): String {
         return this._input.value;
-    }
-
-    public getCanvas(): HTMLCanvasElement {
-        return this._canvas;
     }
 
     /**
@@ -199,28 +127,13 @@ export class ClockCAPTCHA implements ClockCAPTCHAInterface {
                         this._title.textContent = "You are a clever human!";
                         this._input.style.display = "none";
                         this._button.style.display = "none";
-                        this._errorFlag = true;
                     }
                 }
             }
         })
     }
 
-    private async getSHA256Hash(input: string): Promise<string> {
-        const textAsBuffer = new TextEncoder().encode(input);
-        const hashBuffer = await window.crypto.subtle.digest("SHA-256", textAsBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        const hash = hashArray
-            .map((item) => item.toString(16).padStart(2, "0"))
-            .join("");
-        return hash;
-    };
-
-
-    private _seed: String;
-
-    private _errorLog: Array<string>;
-    private _errorFlag: boolean = false;
+    private _token: String;
 
     public _canvas: HTMLCanvasElement = document.createElement('canvas');
     private _moduleBody: HTMLElement = document.createElement('div');
