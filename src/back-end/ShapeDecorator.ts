@@ -33,6 +33,7 @@ export class ShapesDecorator extends Decorator {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(angle);
+            // ctx.strokeStyle = '#'+(Math.trunc(Math.random() * 16777215)).toString(16);
             switch (shape) {
                 case 'square':
                     ctx.strokeRect(-size / 2, -size / 2, size, size);

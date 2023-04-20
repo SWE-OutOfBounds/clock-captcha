@@ -17,16 +17,6 @@ export class ClockCAPTCHA {
     }
 
     /**
-    * Aggiunge un ascoltatore per il click del pulsante.
-    *
-    * @param {EventListener} fun - La funzione da eseguire quando il pulsante viene cliccato.
-    * @returns {boolean} true se il sistema non si trova in uno stato di errore, false altrimenti.
-    */
-    public addButtonListener(fun: EventListener): void {
-        this._button.addEventListener('click', fun);
-    }
-
-    /**
     * Aggiunge il corpo del modulo al contenitore specificato.
     * 
     * @param {HTMLElement | null} container - Il contenitore a cui aggiungere il corpo del modulo.
@@ -40,10 +30,13 @@ export class ClockCAPTCHA {
     }
 
     /**
-     * Resetta il contenuto dell'orologio e aggiorna la parte visiva
-     */
-    public reset(): void {
-
+    * Aggiunge un ascoltatore per il click del pulsante.
+    *
+    * @param {EventListener} fun - La funzione da eseguire quando il pulsante viene cliccato.
+    * @returns {boolean} true se il sistema non si trova in uno stato di errore, false altrimenti.
+    */
+    public addButtonListener(fun: EventListener): void {
+        this._checkButton.addEventListener('click', fun);
     }
 
     /**
@@ -56,7 +49,7 @@ export class ClockCAPTCHA {
     }
 
     /**
-     * Gettter dell'input inserito nel modulo
+     * Getter dell'input inserito nel modulo
      * 
      * @returns {String} Valore presente all'interno del campo d'inserimento del modulo
      */
@@ -87,14 +80,14 @@ export class ClockCAPTCHA {
         stylist.inputDressing(this._input);
         this._input.placeholder = "00:00";
         this._input.maxLength = 5;
-        stylist.buttonDressing(this._button);
-        this._button.type = "button";
-        this._button.textContent = "CHECK";
+        stylist.buttonDressing(this._checkButton);
+        this._checkButton.type = "button";
+        this._checkButton.textContent = "CHECK";
         stylist.rightColumnDressing(rightColumn);
         stylist.inputContainerDressing(inputContainer);
 
         inputContainer.appendChild(this._input);
-        inputContainer.appendChild(this._button);
+        inputContainer.appendChild(this._checkButton);
 
         rightColumn.appendChild(this._title);
         rightColumn.appendChild(inputContainer);
@@ -102,14 +95,9 @@ export class ClockCAPTCHA {
         this._moduleBody.appendChild(this._canvas);
         this._moduleBody.appendChild(rightColumn);
 
-        this.moduleInit();
-    }
+        this._checkButton.style.display = "none";
 
-    /**
-     * Inizializzazione del comportamento di base del modulo
-     */
-    private moduleInit(): void {
-        this._button.addEventListener('click', e => {
+        this._checkButton.addEventListener('click', e => {
             if (this._input.value.length == 0) {
                 this._title.textContent = "Use the input box above!"
                 this._input.style.border = "1px solid red";
@@ -126,7 +114,7 @@ export class ClockCAPTCHA {
                     if (true) {
                         this._title.textContent = "You are a clever human!";
                         this._input.style.display = "none";
-                        this._button.style.display = "none";
+                        this._checkButton.style.display = "none";
                     }
                 }
             }
@@ -137,7 +125,7 @@ export class ClockCAPTCHA {
 
     public _canvas: HTMLCanvasElement = document.createElement('canvas');
     private _moduleBody: HTMLElement = document.createElement('div');
-    private _button: HTMLButtonElement = document.createElement('button');
+    private _checkButton: HTMLButtonElement = document.createElement('button');
     private _input: HTMLInputElement = document.createElement('input');
     private _title: HTMLElement = document.createElement('p');
 }
