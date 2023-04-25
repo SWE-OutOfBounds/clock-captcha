@@ -1,8 +1,8 @@
-import { ClockCAPTCHAInterface } from "./ClockCAPTCHAInterface";
+import { ClockCAPTCHAGeneratorInterface } from "./ClockCAPTCHAGeneratorInterface";
 import { Decorator } from "./Decorator";
 
 export class ShapesDecorator extends Decorator {
-    constructor(component: ClockCAPTCHAInterface, shapesPresence: number) {
+    constructor(component: ClockCAPTCHAGeneratorInterface, shapesPresence: number) {
         super(component);
         //component() => component.draw()
         this._shapePresence = shapesPresence;
@@ -33,6 +33,7 @@ export class ShapesDecorator extends Decorator {
             ctx.save();
             ctx.translate(x, y);
             ctx.rotate(angle);
+            // ctx.strokeStyle = '#'+(Math.trunc(Math.random() * 16777215)).toString(16);
             switch (shape) {
                 case 'square':
                     ctx.strokeRect(-size / 2, -size / 2, size, size);
@@ -47,7 +48,6 @@ export class ShapesDecorator extends Decorator {
                     ctx.moveTo(-size / 2, size / 2);
                     ctx.lineTo(size / 2, size / 2);
                     ctx.lineTo(0, -size / 2);
-                    ctx.lineTo(-size, size);
                     ctx.stroke();
                     break;
             }

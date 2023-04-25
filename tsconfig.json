@@ -6,6 +6,12 @@
     "outDir": "./dist"
   },
   "include": [
-    "src/**/*"
-  ]
+    "src/**/*",
+    "src/index.ts"
+, "tests/unit/ClockCAPTCHAGenerator.test.ts"  ],
+  "typeAcquisition": {
+    "include": [
+      "jest"
+    ]
+  },
 }
