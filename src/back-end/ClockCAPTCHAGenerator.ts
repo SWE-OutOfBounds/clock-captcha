@@ -3,12 +3,11 @@ import { ClockCAPTCHAGeneratorInterface } from './ClockCAPTCHAGeneratorInterface
 import * as CryptoJS from 'crypto-js';
 import * as Canvas from 'canvas';
 
-
 export class ClockCAPTCHAGenerator implements ClockCAPTCHAGeneratorInterface {
 
     constructor(psw: string) {
-        this.draw();
         this._psw = psw;
+        this.draw();
     }
 
     /**
@@ -17,7 +16,7 @@ export class ClockCAPTCHAGenerator implements ClockCAPTCHAGeneratorInterface {
      */
     public draw(): void {
         let hours = Math.floor(Math.random() * 13), minutes = Math.floor(Math.random() * 60);
-        this._token = this.makeToken(hours.toString() + minutes.toString());
+        this._token = this.generateToken(hours.toString() + ':' + minutes.toString());
 
         // Otteniamo il contesto del canvas
         const ctx = this._canvas.getContext('2d');
@@ -82,20 +81,29 @@ export class ClockCAPTCHAGenerator implements ClockCAPTCHAGeneratorInterface {
 
     }
 
-    public getCanvas(): Canvas.Canvas {
-        return this._canvas;
+    private generateToken(message: string): string {
+        return CryptoJS.AES.encrypt(message, this._psw).toString();
+    }
+    
+    // public verifyUserInput(token: string, psw: string, input: string) : boolean{
+    //     return CryptoJS.AES.decrypt(token, psw)
+    // }
+
+    public static verifyUserInput(token: string, psw : string, input : string) : boolean{
+        console.log(CryptoJS.AES.decrypt(token, psw));
+        return CryptoJS.AES.decrypt(token, psw) == input;
     }
 
-    public getToken(): String {
-        return this._token;
-    }
-
-    public getCanvasContent(): string {
+    public getImage(): string {
         return this._canvas.toDataURL();
     }
 
-    private makeToken(message: string): string {
-        return CryptoJS.AES.encrypt(message, this._psw).toString();
+    public getToken(): string {
+        return this._token;
+    }
+
+    public getCanvas(): Canvas.Canvas {
+        return this._canvas;
     }
 
 

@@ -10,14 +10,14 @@ export class Decorator implements ClockCAPTCHAGeneratorInterface {
     public draw(): void {
         this._component.draw();
     }
-    public getToken(): String {
+    public getToken(): string {
         return this._component.getToken();
     }
     public getCanvas(): Canvas.Canvas {
         return this._component.getCanvas();
     }
-    public getCanvasContent(): string {
-        return this._component.getCanvasContent();
+    public getImage(): string {
+        return this._component.getImage();
     }
 
     protected _component: ClockCAPTCHAGeneratorInterface;
