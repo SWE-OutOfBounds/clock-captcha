@@ -1,8 +1,8 @@
-import { ClockCAPTCHAInterface } from "./ClockCAPTCHAInterface";
+import { ClockCAPTCHAGeneratorInterface } from "./ClockCAPTCHAGeneratorInterface";
 import { Decorator } from "./Decorator";
 
 export class DistortionDecorator extends Decorator {
-    constructor(component: ClockCAPTCHAInterface, distortionFactor: number) {
+    constructor(component: ClockCAPTCHAGeneratorInterface, distortionFactor: number) {
         super(component);
         //component() => component.draw()
         this._distortionFactor = distortionFactor;
