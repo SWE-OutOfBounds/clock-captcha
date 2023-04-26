@@ -15,8 +15,8 @@ export class ClockCAPTCHAGenerator implements ClockCAPTCHAGeneratorInterface {
      * Inizializza il campo dati _seed
      */
     public draw(): void {
-        let hours = Math.floor(Math.random() * 13), minutes = Math.floor(Math.random() * 60);
-        this._token = this.generateToken(hours.toString() + ':' + minutes.toString());
+        let hours = Math.floor(Math.random() * 11), minutes = Math.floor(Math.random() *59);
+        this._token = this.generateToken( (hours<10 ? "0" + hours.toString() : hours.toString()) + ':' + (minutes<10 ? "0" + minutes.toString() : minutes.toString()));
 
         // Otteniamo il contesto del canvas
         const ctx = this._canvas.getContext('2d');
@@ -90,8 +90,7 @@ export class ClockCAPTCHAGenerator implements ClockCAPTCHAGeneratorInterface {
     // }
 
     public static verifyUserInput(token: string, psw : string, input : string) : boolean{
-        console.log(CryptoJS.AES.decrypt(token, psw));
-        return CryptoJS.AES.decrypt(token, psw) == input;
+        return CryptoJS.AES.decrypt(token, psw).toString(CryptoJS.enc.Utf8) == input;
     }
 
     public getImage(): string {

@@ -24,8 +24,8 @@ export class ShapesDecorator extends Decorator {
             const shape = shapes[Math.floor(Math.random() * shapes.length)];
 
             // Genera una posizione e una rotazione casuali
-            const x = Math.random() * width;
-            const y = Math.random() * height;
+            const x = (0.2 * width) + (Math.random() * (0.6 * width));
+            const y = (0.2 * height) + (Math.random() * (0.6 * height));
             const angle = Math.random() * Math.PI * 2;
             const size = Math.random() * 40 + 10;// dimensione tra 10 e 50 pixel
 
@@ -55,5 +55,5 @@ export class ShapesDecorator extends Decorator {
         }
     }
 
-    private _shapePresence: number;
+    protected _shapePresence: number;
 }
