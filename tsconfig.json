@@ -7,8 +7,7 @@
   },
   "include": [
     "src/**/*",
-    "src/index.ts"
-, "tests/unit/ClockCAPTCHAGenerator.test.ts"  ],
+    "src/index.ts"],
   "typeAcquisition": {
     "include": [
       "jest"
