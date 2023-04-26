@@ -1,7 +1,6 @@
-import { Canvas } from "canvas";
 import { ClockCAPTCHAGenerator } from "../../src/back-end/ClockCAPTCHAGenerator";
-describe("ClockCAPTCHAGenerator", () => {
 
+describe("ClockCAPTCHAGenerator unit tests", () => {
 
     describe("Interfaccia", () => {
         let tested = new ClockCAPTCHAGenerator("")
@@ -35,11 +34,5 @@ describe("ClockCAPTCHAGenerator", () => {
         })
     })
 
-    describe("Funzionamento", () => {
-        let generator = new ClockCAPTCHAGenerator("");
-        let drawSpy = jest.spyOn(generator, "draw");
-
-
-    })
 
 })
