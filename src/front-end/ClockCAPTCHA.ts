@@ -3,6 +3,7 @@ export class ClockCAPTCHA {
 
     constructor(image_src: string, token: string) {
         this._canvas.id = "mainContainer";
+        this._token = token;
 
         const aux = this._canvas.getContext('2d');
         var destinationImage = new Image;
