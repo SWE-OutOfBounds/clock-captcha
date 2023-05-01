@@ -1,5 +1,5 @@
 import * as stylist from './stylist';
-export class ClockCAPTCHA {
+export class ClockCAPTCHAView {
 
     constructor(image_src: string, token: string) {
         this._canvas.id = "mainContainer";
@@ -44,7 +44,7 @@ export class ClockCAPTCHA {
      * 
      * @returns {String} seed generato dal modulo
      */
-    public getToken(): String {
+    public getToken(): string {
         return this._token;
     }
 
@@ -53,7 +53,7 @@ export class ClockCAPTCHA {
      * 
      * @returns {String} Valore presente all'interno del campo d'inserimento del modulo
      */
-    public getInput(): String {
+    public getInput(): string {
         return this._input.value;
     }
 
@@ -121,7 +121,7 @@ export class ClockCAPTCHA {
         })
     }
 
-    private _token: String;
+    private _token: string;
 
     public _canvas: HTMLCanvasElement = document.createElement('canvas');
     private _moduleBody: HTMLElement = document.createElement('div');
