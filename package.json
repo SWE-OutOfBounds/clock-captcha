@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "typings": "dist/index.js",
   "scripts": {
+    "clean" : "rm -r ./dist",
+    "clean-build" : "npm run clean && tsc",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
   },
   "keywords": [
