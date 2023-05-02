@@ -9,9 +9,9 @@ export class ClockCAPTCHA {
         var destinationImage = new Image;
 
         destinationImage.onload = function () {
-          aux?.drawImage(destinationImage, 0, 0, 100, 100);
+            aux?.drawImage(destinationImage, 0, 0, 100, 100);
         };
-        
+
         destinationImage.src = image_src;
 
         this.moduleBuild();
@@ -63,8 +63,33 @@ export class ClockCAPTCHA {
      * 
      * @param {string} title nuovo titolo per il modulo di test 
      */
-    public setTitle(title: string): void {
-        this._title.innerHTML = title;
+    public error(err: string): void {
+        this._title.style.color = "red";
+        this._title.innerHTML = err;
+    }
+
+    public clear(): void {
+        this._input.value = '';
+        this._title.style.color = "white";
+        this._title.textContent = 'Tell the time!';
+    }
+
+    public message(msg: string): void {
+        this._title.innerHTML = msg;
+    }
+
+    public redraw(image_src: string, token: string): void {
+        this._token = token;
+
+        const aux = this._canvas.getContext('2d');
+        aux.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        var destinationImage = new Image;
+
+        destinationImage.onload = function () {
+            aux?.drawImage(destinationImage, 0, 0, 100, 100);
+        };
+
+        destinationImage.src = image_src;
     }
 
     /**
@@ -123,6 +148,7 @@ export class ClockCAPTCHA {
     }
 
     private _token: string;
+
 
     public _canvas: HTMLCanvasElement = document.createElement('canvas');
     private _moduleBody: HTMLElement = document.createElement('div');
