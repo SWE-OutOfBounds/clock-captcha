@@ -7,7 +7,7 @@ export function canvasDressing(canvas: HTMLCanvasElement) : void{
     canvas.style.transform = "rotate(-7deg) scale(1.05)";
 }
 export function containerDressing(container: HTMLElement) : void{
-    let styleSheet : string = "width: 300px;height: 100px; background-color: #333; background-image: linear-gradient(to right, #434343 0%, black #333); display: flex; flex-flow: row nowrap; justify-content:center;padding:0;";
+    let styleSheet : string = "width: 300px;height: 100px; background-color: #333; background-image: linear-gradient(to right, #434343 0%, black #333); display: flex; flex-flow: row nowrap; justify-content:center;padding:0;margin:20px 0;";
     container.setAttribute("style", styleSheet);
 }
 export function inputContainerDressing(container: HTMLElement) : void{
