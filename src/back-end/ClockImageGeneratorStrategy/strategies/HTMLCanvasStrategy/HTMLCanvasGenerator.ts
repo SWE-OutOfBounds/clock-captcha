@@ -2,7 +2,14 @@ import { HTMLCanvasStrategy } from "./HTMLCanvasStrategy";
 
 import * as Canvas from "canvas";
 
+
 export class HTMLCanvasGenerator implements HTMLCanvasStrategy{
+    /**
+     * Genera un'immagine che rappresenta un orario sottoforma di orologio analogico
+     * @param hours : Ore
+     * @param minutes : Minuti
+     * @returns Immgine in formato stringa
+     */
     public generate(hours: number, minutes: number): string {
         const aux = Canvas.createCanvas(100, 100);
         let ctx = aux.getContext('2d');

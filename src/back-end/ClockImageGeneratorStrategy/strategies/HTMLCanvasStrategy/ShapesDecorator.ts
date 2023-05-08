@@ -3,11 +3,21 @@ import { HTMLCanvasStrategy } from "./HTMLCanvasStrategy";
 import * as Canvas from "canvas";
 
 export class ShapesDecorator extends HTMLCanvasDecorator{
+    /**
+     * Costruttore
+     * @param component Componente primario al quale applicare il disturbo
+     * @param shapePresence Numero di forme da applicare all'immagine principale
+     */
     constructor(component: HTMLCanvasStrategy, shapePresence: number) {
         super(component);
         this._shapePresence = shapePresence;
     }
-
+    /**
+     * Data un immagine in formato stringa ci applica sopra del disturbo sottoforma di forme geometrice di ranodmica forma e misura
+     * @param hours : Ore
+     * @param minutes : Minuti
+     * @returns Immgine in formato stringa
+     */
     public generate(hours: number, minutes: number): string {
         const aux = Canvas.createCanvas(100, 100);
         const width = aux.width;
