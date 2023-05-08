@@ -1,9 +1,13 @@
 import { HTMLCanvasStrategy } from "./HTMLCanvasStrategy";
 
 export abstract class HTMLCanvasDecorator implements HTMLCanvasStrategy{
-    generate(hours: number, minutes: number): string {
-        return this._component.generate(hours, minutes);
+    constructor(component: HTMLCanvasStrategy) {
+        this.component = component;
     }
 
-    private _component: HTMLCanvasStrategy;
+    generate(hours: number, minutes: number): string {
+        return this.component.generate(hours, minutes);
+    }
+
+    protected component: HTMLCanvasStrategy;
 }

@@ -1,7 +1,12 @@
-import { ClockImageGenerationStrategy } from "./ClockImageGenerationStrategy";
+import { ClockImageGenerationStrategy } from "./ClockImageGeneratorStrategy/ClockImageGeneratorStrategy";
 export class ClockImageGenerator{
-    public generateImage(hours: number, minutes: number): string{
-        return this._strategy.generate(hours, minutes);
+    constructor(strategy: ClockImageGenerationStrategy) {
+        this.strategy = strategy;
     }
-    private _strategy: ClockImageGenerationStrategy;
+
+    public generateImage(hours: number, minutes: number): string {
+        return this.strategy.generate(hours, minutes);
+    }
+
+    private strategy: ClockImageGenerationStrategy;
 }
