@@ -14,8 +14,13 @@ export class ClockImageGenerator{
      * @param hours : Ora dell'orario
      * @param minutes : Minuti dell'orario
      * @returns Immagine in formato stringa
+     * @throws Error:
+     *              -Invalid hours format. : hours non compreso tra 0 e 11
+     *              -Invalid minutes format. : minutes non compreso tra 0 e 59
      */
     public generateImage(hours: number, minutes: number): string {
+        if(hours < 0 || hours > 11) throw Error("Invalid hours format.");
+        if(minutes < 0 || minutes > 59) throw Error("Invalid minutes format.");
         return this.strategy.generate(hours, minutes);
     }
 
