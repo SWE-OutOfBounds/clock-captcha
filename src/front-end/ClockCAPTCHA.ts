@@ -1,5 +1,5 @@
 import * as stylist from './stylist';
-export class ClockCAPTCHA {
+export class ClockCAPTCHAView {
 
     constructor() {
         this._canvas.id = "mainContainer";

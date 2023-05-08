@@ -1,22 +1,34 @@
-import { ClockCAPTCHAGeneratorInterface } from "./ClockCAPTCHAGeneratorInterface";
-import { Decorator } from "./Decorator";
+import { HTMLCanvasDecorator } from "./HTMLCanvasDecorator";
+import { HTMLCanvasStrategy } from "./HTMLCanvasStrategy";
+import * as Canvas from "canvas";
 
-export class ShapesDecorator extends Decorator {
-    constructor(component: ClockCAPTCHAGeneratorInterface, shapesPresence: number) {
+export class ShapesDecorator extends HTMLCanvasDecorator{
+    /**
+     * Costruttore
+     * @param component Componente primario al quale applicare il disturbo
+     * @param shapePresence Numero di forme da applicare all'immagine principale
+     */
+    constructor(component: HTMLCanvasStrategy, shapePresence: number) {
         super(component);
-        //component() => component.draw()
-        this._shapePresence = shapesPresence;
-        this.draw();
-        //this.draw()
+        this._shapePresence = shapePresence;
     }
+    /**
+     * Data un immagine in formato stringa ci applica sopra del disturbo sottoforma di forme geometrice di ranodmica forma e misura
+     * @param hours : Ore
+     * @param minutes : Minuti
+     * @returns Immgine in formato stringa
+     */
+    public generate(hours: number, minutes: number): string {
+        const aux = Canvas.createCanvas(100, 100);
+        const width = aux.width;
+        const height = aux.height;
+        let ctx = aux.getContext('2d');
 
-    public draw(): void {
-        const ctx = this._component.getCanvas().getContext('2d');
-        const width = this._component.getCanvas().width;
-        const height = this._component.getCanvas().height;
-
-        // Crea un'array di forme geometriche possibili
-        const shapes = ['square', 'circle', 'triangle'];
+        var destinationImage = new Canvas.Image();
+        destinationImage.src = super.generate(hours, minutes);
+        ctx.drawImage(destinationImage, 0, 0, 100, 100);
+        
+        const shapes = ['square', 'circle', 'triangle', 'tringle'];
 
         // Disegna il numero specificato di forme casuali
         for (let i = 0; i < this._shapePresence; i++) {
@@ -27,7 +39,7 @@ export class ShapesDecorator extends Decorator {
             const x = (0.2 * width) + (Math.random() * (0.6 * width));
             const y = (0.2 * height) + (Math.random() * (0.6 * height));
             const angle = Math.random() * Math.PI * 2;
-            const size = Math.random() * 40 + 10;// dimensione tra 10 e 50 pixel
+            const size = Math.random() * 20 + 10;// dimensione tra 10 e 40 pixel
 
             // Disegna la forma nella posizione e rotazione specificate
             ctx.save();
@@ -53,7 +65,9 @@ export class ShapesDecorator extends Decorator {
             }
             ctx.restore();
         }
+
+        return aux.toDataURL();
     }
 
-    protected _shapePresence: number;
+    private _shapePresence: number;
 }

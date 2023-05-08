@@ -1,7 +1,8 @@
-export { ClockCAPTCHA } from "./front-end/ClockCAPTCHA";
+// Front-end exports
+export { ClockCAPTCHAView } from "./front-end/ClockCAPTCHA";
 
-
-export { Decorator } from "./back-end/Decorator";
-export { ClockCAPTCHAGenerator } from "./back-end/ClockCAPTCHAGenerator";
-export { ShapesDecorator } from "./back-end/ShapeDecorator";
-export { NoiseDecorator } from "./back-end/NoiseDecorator";
+// Back-end exports
+export { ClockCAPTCHA } from "./back-end/ClockCAPTCHA";
+export { ClockImageGenerator } from "./back-end/ClockImageGenerator";
+export { HTMLCanvasGenerator } from "./back-end/ClockImageGeneratorStrategy/strategies/HTMLCanvasStrategy/HTMLCanvasGenerator";
+export { ShapesDecorator } from "./back-end/ClockImageGeneratorStrategy/strategies/HTMLCanvasStrategy/ShapesDecorator";
