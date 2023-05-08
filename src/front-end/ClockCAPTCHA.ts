@@ -1,20 +1,10 @@
 import * as stylist from './stylist';
 export class ClockCAPTCHAView {
 
-    constructor(image_src: string, token: string) {
+    constructor() {
         this._canvas.id = "mainContainer";
-        this._token = token;
-
-        const aux = this._canvas.getContext('2d');
-        var destinationImage = new Image;
-
-        destinationImage.onload = function () {
-            aux?.drawImage(destinationImage, 0, 0, 100, 100);
-        };
-
-        destinationImage.src = image_src;
-
         this.moduleBuild();
+        this.waiting();
     }
 
     /**
@@ -69,6 +59,7 @@ export class ClockCAPTCHAView {
     }
 
     public clear(): void {
+        this.waiting();
         this._input.value = '';
         this._title.style.color = "white";
         this._title.textContent = 'Tell the time!';
@@ -78,13 +69,15 @@ export class ClockCAPTCHAView {
         this._title.innerHTML = msg;
     }
 
-    public redraw(image_src: string, token: string): void {
+    public fill(image_src: string, token: string): void {
+        //TODO : check if image_src is consistent
+        this.done();
         this._token = token;
-
+        
         const aux = this._canvas.getContext('2d');
         aux.clearRect(0, 0, this._canvas.width, this._canvas.height);
         var destinationImage = new Image;
-
+        
         destinationImage.onload = function () {
             aux?.drawImage(destinationImage, 0, 0, 100, 100);
         };
@@ -147,9 +140,27 @@ export class ClockCAPTCHAView {
         })
     }
 
+    private waiting() : void{
+        var ctx = this._canvas.getContext('2d'), spinnerVal = 0;
+        this._spinner = setInterval(()=>{
+            ctx.clearRect(0,0,this._canvas.width, this._canvas.height);
+            ctx.textAlign = "center";
+            spinnerVal%3 == 0 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
+            ctx.fillText('.', 40, 50);
+            spinnerVal%3 == 1 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
+            ctx.fillText('.', 50, 50);
+            spinnerVal%3 == 2 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
+            ctx.fillText('.', 60, 50);
+            spinnerVal++;
+        }, 114);
+    }
+    private done() : void{
+        clearTimeout(this._spinner);
+    }
+
     private _token: string;
 
-
+    private _spinner : NodeJS.Timer;
     public _canvas: HTMLCanvasElement = document.createElement('canvas');
     private _moduleBody: HTMLElement = document.createElement('div');
     private _checkButton: HTMLButtonElement = document.createElement('button');

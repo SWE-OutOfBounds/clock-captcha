@@ -2,7 +2,7 @@ import { HTMLCanvasDecorator } from "./HTMLCanvasDecorator";
 import { HTMLCanvasStrategy } from "./HTMLCanvasStrategy";
 import * as Canvas from "canvas";
 
-export class ShapeDecorator extends HTMLCanvasDecorator{
+export class ShapesDecorator extends HTMLCanvasDecorator{
     constructor(component: HTMLCanvasStrategy, shapePresence: number) {
         super(component);
         this._shapePresence = shapePresence;
