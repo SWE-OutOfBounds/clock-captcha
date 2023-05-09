@@ -12,7 +12,7 @@ describe("ClockImageGenerator unit tests", () => {
 
     })
 
-    describe("Funzionamento di base", () => {
+    describe("Funzionamento di base di generateImage()", () => {
 
         it("Chiamata con parametri fuori range solleva eccezione", () => {
             const outOfRangeParameters = () => {
