@@ -18,6 +18,7 @@ export class ClockCAPTCHA{
      */
     static generateData(password: string, ImageGenerator: ClockImageGenerator): Object {
         if(password.length == 0 || password == "") throw Error("Invalid password format.");
+        if(!ImageGenerator) throw Error('Image generator needed.');
         let hours: number = Math.floor(Math.random() * 11), minutes: number = Math.floor(Math.random() * 59);
         let timestamp: string = (hours < 10 ? "0" + hours.toString() : hours.toString()) + ':' + (minutes < 10 ? "0" + minutes.toString() : minutes.toString())
         return {
