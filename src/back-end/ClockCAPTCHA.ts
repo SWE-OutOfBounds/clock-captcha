@@ -16,13 +16,13 @@ export class ClockCAPTCHA{
      * @throws Error:
      *              - "Invalid password format." : Ricevuta password vuota in ingresso.
      */
-    public generateData(password: string, ImageGenerator: ClockImageGenerator): Object {
+    static generateData(password: string, ImageGenerator: ClockImageGenerator): Object {
         if(password.length == 0 || password == "") throw Error("Invalid password format.");
         let hours: number = Math.floor(Math.random() * 11), minutes: number = Math.floor(Math.random() * 59);
         let timestamp: string = (hours < 10 ? "0" + hours.toString() : hours.toString()) + ':' + (minutes < 10 ? "0" + minutes.toString() : minutes.toString())
         return {
             image: ImageGenerator.generateImage(hours, minutes),
-            token: this.encrypt(timestamp, password)
+            token: CryptoJS.AES.encrypt(timestamp, password).toString()
         }
     }
 
@@ -40,33 +40,16 @@ export class ClockCAPTCHA{
      *                  - Too manu arguments in object: presenti più campi dati di quelli necessari(token, input)
      *                  - Invalid password format. : Ricevuta password vuota
      */
-    public validateData(data: Object, psw: string): boolean {
+    static validateData(data: Object, psw: string): boolean {
         if(psw == "" || psw.length == 0) throw Error("Invalid password format.")
         if (data.hasOwnProperty('token') && data.hasOwnProperty('input') && Object.keys(data).length == 2) {
-            return this.decrypt(data['token'], psw) == data['input'];
+            if(data['token'] == '') throw Error('Invalid token format.');
+            else if(data['input'] == '') throw Error('Invalid input format.');
+            else return CryptoJS.AES.decrypt(data['token'], psw).toString(CryptoJS.enc.Utf8) == data['input'];
         } else {
             if (!data.hasOwnProperty('token')) throw Error('Missing token.');
             if (!data.hasOwnProperty('input')) throw Error('Missing input.');
             if (Object.keys(data).length > 2) throw Error('Too many arguments in object.')
         }
-    }
-    /**
-     * Critta dei dati utilizzando una password
-     * @param data : Dati da crittare
-     * @param psw : Password utilizzata nella fase di crittazione
-     * @returns Dati crittati
-     */
-    private encrypt(data: string, psw: string): string {
-        return CryptoJS.AES.encrypt(data, psw).toString();
-    }
-
-    /**
-     * Decritta dei dati utilizzando una password
-     * @param data : Dati da decrittare
-     * @param psw : Password utilizzata nella fase di decrittazione
-     * @returns Dati decrittati
-     */
-    private decrypt(token: string, psw: string): boolean {
-        return CryptoJS.AES.decrypt(token, psw).toString(CryptoJS.enc.Utf8);
     }
 }
