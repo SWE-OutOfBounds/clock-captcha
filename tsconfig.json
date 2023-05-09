@@ -13,6 +13,5 @@
     "include": [
       "jest"
     ]
-  },
-  "types": ["node"]
+  }
 }
