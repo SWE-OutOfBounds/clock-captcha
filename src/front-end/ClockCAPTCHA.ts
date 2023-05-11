@@ -14,8 +14,10 @@ export class ClockCAPTCHAView {
     * @returns {boolean} true se l'iniezione è avvenuta con successo, false altrimenti.
     */
     public inject(container: HTMLElement | null): boolean {
-        if (container)
+        if (container){
+            container.innerHTML = "";
             container.appendChild(this._moduleBody);
+        }
         else return false;
         return true;
     }
