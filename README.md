@@ -10,7 +10,7 @@ CAPTCHA service usable in web application to reduce bot spam and other pain.
 | Functions                              | Summary                                              | Return  | Examples                                                          |
 |----------------------------------------|------------------------------------------------------|---------|-------------------------------------------------------------------|
 | constructor()                          | Builds the module and trigger the load animation     | -       | ``captchaModule = new ClockCAPTCHAView()``                        |
-| inject(container : HTMLELEMENT)        | Place the module into a HTML container               | boolean | ``catchaModule.inject(document.getElementById('clock-captcha'))`` |
+| inject(container : HTMLElement)        | Place the module into a HTML container               | boolean | ``captchaModule.inject(document.getElementById('clock-captcha'))`` |
 | fill(image_src: string, token: string) | Fill the module with an image and the relative token | void    | ``captchaModule.fill(res.body.image, res.body.token) ``           |
 | getToken()                             | Return the token contained in the module             | string  | ``captchaModule.getToken()``                                      |
 | getInput()                             | Returns the input field content                      | string  | ``captchaModule.getInput()``                                      |
@@ -18,7 +18,7 @@ CAPTCHA service usable in web application to reduce bot spam and other pain.
 | message(msg: string)                   | Display an info message to the user                  | void    | ``captchaModule.message("Please tell the time!")``                |
 | clear()                                | Cleans the module content and trigger load animation | void    | ``captchaModule.clear()``                                         |
 
-#### Usage example in ANGULAR enviroment
+#### Usage example in ANGULAR environment
 
 This library provides:
 1. back-end components that :
@@ -48,16 +48,16 @@ The implementations of their communication is totally up to the developer.
 
 ```
 
-In this example ``_ccService.ccInit()`` calls the back-end to retrive the image content and the relative token.
+In this example ``_ccService.ccInit()`` calls the back-end to retrieve the image content and the relative token.
 
 ##### Get captcha result and handle it
 
 ```typescript
     
-    signup(): void {
+    signUp(): void {
     this._ccService.validate(this.captchaModule.getToken(), this.captchaModule.getInput()).subscribe(result =>{
         if(result.okay){
-            this._otherService.signup(/*... signup data ...*/, result.token).subscribe(result=>{
+            this._otherService.signUp(/*... signUp data ...*/, result.token).subscribe(result=>{
                 // result handle
             })
         }else{
@@ -71,7 +71,7 @@ In this example ``_ccService.ccInit()`` calls the back-end to retrive the image 
   }
 
 ```
-In this example ``_ccService`` has a function ``validate(token: string, input: string)`` that asks the backend if the user input is a solution of the captcha. If the result is okay, the back end return a onetime token that can be used by ``signup`` function of another dedicated angular service, as ``security pass`` to perform the signup.
+In this example ``_ccService`` has a function ``validate(token: string, input: string)`` that asks the backend if the user input is a solution of the captcha. If the result is okay, the back end return a onetime token that can be used by ``signUp`` function of another dedicated angular service, as ``security pass`` to perform the signUp.
 
 ### BACK-END
 
@@ -80,7 +80,7 @@ In this example ``_ccService`` has a function ``validate(token: string, input: s
 | extends/implements           | Type           | Name                         | Constructor                                                              |
 |------------------------------|----------------|------------------------------|--------------------------------------------------------------------------|
 | -                            | class          | ClockCAPTCHA                 | ``ClockCaptcha()``                                                       |
-| -                            | class          | ClockImageGenerator          | ``ClockImageGenerator(strategy: ClockImageGeneratioStrategy)``           |
+| -                            | class          | ClockImageGenerator          | ``ClockImageGenerator(strategy: ClockImageGenerationStrategy)``           |
 | -                            | Interface      | ClockImageGenerationStrategy | -                                                                        |
 | ClockImageGenerationStrategy | Interface      | HTMLCanvasStrategy           | -                                                                        |
 | HTMLCanvasStrategy           | class          | HTMLCanvasGenerator          | ``HTMLCanvasGenerator()``                                                |
@@ -108,7 +108,7 @@ In this example ``_ccService`` has a function ``validate(token: string, input: s
 | NoiseDecorator               | Noise Decorator                                                              |
 | ShapesDecorator              | Shape Decorator                                                              |
 
-#### Usage example in node.js eviroment
+#### Usage example in node.js environment
 
 ##### Generate data for view component
 
@@ -117,7 +117,7 @@ In this example ``_ccService`` has a function ``validate(token: string, input: s
     var clockWithShapeStrategy = new cc.NoiseDecorator(onlyClock,7);
     var clockWithNoiseStrategy = new cc.NoiseDecorator(onlyClock,10);
     var clockWithNoiseAndShapeStrategy = new cc.NoiseDecorator(clockWithShapeStrategy, 10)
-    var clockWithShapeAndNosieStrategy = new cc.ShapeDecorator(clockWithShapeStrategy, 7)
+    var clockWithShapeAndNoiseStrategy = new cc.ShapeDecorator(clockWithShapeStrategy, 7)
         
     var ImageGenerator = new cc.ClockImageGenerator(onlyClockStrategy);
 
@@ -131,13 +131,13 @@ In this example ``_ccService`` has a function ``validate(token: string, input: s
     res.status(200).json(resPayload);
 ```
 In this example we have an implementation of an API (using express) where an application can request data for ``ClockCAPTCHAView.fill()`` function.\
-As shown above, there are diferent options for the ImageGenerationStrategy such that the service is suitable in multiple scenarios , either low or high risk.
+As shown above, there are different options for the ImageGenerationStrategy such that the service is suitable in multiple scenarios , either low or high risk.
 
 ##### Validate data received from an app that use view component
 ```javascript
     //get token and image
     if(ClockCAPTCHA.validateData({token:decoded_token, input: user_input}, password)){
-        // CAPCHA passed
+        // CAPTCHA passed
     }else{
         // CAPTCHA failed
     }
