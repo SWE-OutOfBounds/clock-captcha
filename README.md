@@ -1,7 +1,11 @@
 # Clock CAPTCHA - V1.0
 CAPTCHA service usable in web application to reduce bot spam and other pain.
 
+---
+
 ### FRONT-END ( ``ClockCAPTCHAView()`` )
+
+#### Interface
 
 | Functions                              | Summary                                              | Return  | Examples                                                          |
 |----------------------------------------|------------------------------------------------------|---------|-------------------------------------------------------------------|
@@ -69,6 +73,75 @@ In this example ``_ccService.ccInit()`` calls the back-end to retrive the image 
 ```
 In this example ``_ccService`` has a function ``validate(token: string, input: string)`` that asks the backend if the user input is a solution of the captcha. If the result is okay, the back end return a onetime token that can be used by ``signup`` function of another dedicated angular service, as ``security pass`` to perform the signup.
 
+### BACK-END
 
-**License**: MIT,
+#### Components
+
+| extends/implements           | Type           | Name                         | Constructor                                                              |
+|------------------------------|----------------|------------------------------|--------------------------------------------------------------------------|
+| -                            | class          | ClockCAPTCHA                 | ``ClockCaptcha()``                                                       |
+| -                            | class          | ClockImageGenerator          | ``ClockImageGenerator(strategy: ClockImageGeneratioStrategy)``           |
+| -                            | Interface      | ClockImageGenerationStrategy | -                                                                        |
+| ClockImageGenerationStrategy | Interface      | HTMLCanvasStrategy           | -                                                                        |
+| HTMLCanvasStrategy           | class          | HTMLCanvasGenerator          | ``HTMLCanvasGenerator()``                                                |
+| HTMLCanvasStrategy           | abstract class | HTMLCanvasDecorator          | -                                                                        |
+| HTMLCanvasDecorator          | class          | NoiseDecorator               | ``NoiseDecorator(component:HTMLCanvasStrategy, noiseFactor: number)``    |
+| HTMLCanvasDecorator          | class          | ShapesDecorator              | ``ShapesDecorator(component:HTMLCanvasStrategy, shapePresence: number)`` |
+
+#### Methods
+
+| Firm                                                          | Returns                                 | Throws                                |
+|---------------------------------------------------------------|-----------------------------------------|---------------------------------------|
+| generateData(password, img_generator: ImageGenerator): Object | object = {image: string, token: string} | Error on password format.             |
+| validateData(data :object): boolean                           | operation outcome                       | Errors on "data" input object format  |
+
+#### Descriptions
+
+| Name                         | Description                                                                  |
+|------------------------------|------------------------------------------------------------------------------|
+| ClockCAPTCHA                 | Generates and validates data for and from ClockCAPTCHAView                   |
+| ClockImageGenerator          | Components that generate a clock image from hours and minutes values         |
+| ClockImageGenerationStrategy | Algorithm that creates an analog clock image                                 |
+| HTMLCanvasStrategy           | HTMLCanvas version of ClockImageGenerationStrategy                           |
+| HTMLCanvasGenerator          | Strategy element for ClockImageGenerator, generate simple analog clock image |
+| HTMLCanvasDecorator          | Decorator pattern                                                            |
+| NoiseDecorator               | Noise Decorator                                                              |
+| ShapesDecorator              | Shape Decorator                                                              |
+
+#### Usage example in node.js eviroment
+
+##### Generate data for view component
+
+```javascript
+    var onlyClockStrategy = new cc.HTMLCanvasGenerator();
+    var clockWithShapeStrategy = new cc.NoiseDecorator(onlyClock,7);
+    var clockWithNoiseStrategy = new cc.NoiseDecorator(onlyClock,10);
+    var clockWithNoiseAndShapeStrategy = new cc.NoiseDecorator(clockWithShapeStrategy, 10)
+    var clockWithShapeAndNosieStrategy = new cc.ShapeDecorator(clockWithShapeStrategy, 7)
+        
+    var ImageGenerator = new cc.ClockImageGenerator(onlyClockStrategy);
+
+    var cc_data = cc.ClockCAPTCHA.generateData(password, ImageGenerator);
+
+    var resPayload = {
+        token: jwt.sign({token: cc_data.token}, password, {expiresIn: '30s'}),
+        image: cc_data.image
+    };
+
+    res.status(200).json(resPayload);
+```
+In this example we have an implementation of an API (using express) where an application can request data for ``ClockCAPTCHAView.fill()`` function.\
+As shown above, there are diferent options for the ImageGenerationStrategy such that the service is suitable in multiple scenarios , either low or high risk.
+
+##### Validate data received from an app that use view component
+```javascript
+    //get token and image
+    if(ClockCAPTCHA.validateData({token:decoded_token, input: user_input}, password)){
+        // CAPCHA passed
+    }else{
+        // CAPTCHA failed
+    }
+```
+---
+**License**: MIT
 **Author** : OutOfBounds.
