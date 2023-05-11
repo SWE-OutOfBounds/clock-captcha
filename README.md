@@ -113,6 +113,8 @@ In this example ``_ccService`` has a function ``validate(token: string, input: s
 ##### Generate data for view component
 
 ```javascript
+    import * as cc from 'path/to/index';
+    
     var onlyClockStrategy = new cc.HTMLCanvasGenerator();
     var clockWithShapeStrategy = new cc.NoiseDecorator(onlyClock,7);
     var clockWithNoiseStrategy = new cc.NoiseDecorator(onlyClock,10);
