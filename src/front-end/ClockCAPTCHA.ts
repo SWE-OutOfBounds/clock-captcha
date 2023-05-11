@@ -1,6 +1,9 @@
 import * as stylist from './stylist';
 export class ClockCAPTCHAView {
 
+    /**
+    * Crea un'istanza di ClockCAPTCHAView.
+    */
     constructor() {
         this._canvas.id = "mainContainer";
         this.moduleBuild();
@@ -49,15 +52,18 @@ export class ClockCAPTCHAView {
     }
 
     /**
-     * Setter per il titolo del modulo
+     * Mostra un messaggio di errore all'utente
      * 
-     * @param {string} title nuovo titolo per il modulo di test 
+     * @param {string} err contenuto del messaggio 
      */
     public error(err: string): void {
         this._title.style.color = "red";
         this._title.innerHTML = err;
     }
 
+    /**
+    * Ripristina lo stato predefinito del modulo.
+    */
     public clear(): void {
         this.waiting();
         this._input.value = '';
@@ -65,33 +71,53 @@ export class ClockCAPTCHAView {
         this._title.textContent = 'Tell the time!';
     }
 
+    /**
+    * Mostra un messaggio nel modulo.
+    *
+    * @param {string} msg - Messaggio da visualizzare.
+    */
     public message(msg: string): void {
         this._title.innerHTML = msg;
     }
 
+    /**
+    * Riempie il modulo con un'immagine e un token.
+    *
+    * @param {string} image_src - URL dell'immagine da visualizzare.
+    * @param {string} token - Token da associare al modulo.
+    */
     public fill(image_src: string, token: string): void {
         //TODO : check if image_src is consistent
+        // Invocazione del metodo "done"
         this.done();
-        this._token = token;
-        
-        const aux = this._canvas.getContext('2d');
-        aux.clearRect(0, 0, this._canvas.width, this._canvas.height);
-        var destinationImage = new Image;
-        
-        destinationImage.onload = function () {
-            aux?.drawImage(destinationImage, 0, 0, 100, 100);
-        };
 
+        // Impostazione del token
+        this._token = token;
+
+        // Recupero del contesto 2D del canvas e pulizia del suo contenuto
+        const context = this._canvas.getContext('2d');
+        context?.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
+        // Creazione di un nuovo oggetto "Image" e assegnazione della sorgente dell'immagine
+        const destinationImage = new Image;
         destinationImage.src = image_src;
+
+        // Definizione della funzione da eseguire quando l'immagine è stata caricata
+        destinationImage.onload = function () {
+            // Disegno dell'immagine all'interno del canvas
+            context?.drawImage(destinationImage, 0, 0, 100, 100);
+        };
     }
 
     /**
-     * Costruzione della parte visiva del modulo e inizializzazione del suo comportamento di base
+     * Costruisce della parte visiva del modulo e inizializzazione del suo comportamento di base
      */
     private moduleBuild(): void {
+        //Creazione scheletro di base
         let rightColumn: HTMLElement = document.createElement("div");
         let inputContainer: HTMLElement = document.createElement('div');
 
+        //Applicazione dello stile agli elementi 
         stylist.containerDressing(this._moduleBody);
         stylist.canvasDressing(this._canvas);
         stylist.titleDressing(this._title);
@@ -105,6 +131,7 @@ export class ClockCAPTCHAView {
         stylist.rightColumnDressing(rightColumn);
         stylist.inputContainerDressing(inputContainer);
 
+        // Composizione elementi
         inputContainer.appendChild(this._input);
         inputContainer.appendChild(this._checkButton);
 
@@ -114,6 +141,8 @@ export class ClockCAPTCHAView {
         this._moduleBody.appendChild(this._canvas);
         this._moduleBody.appendChild(rightColumn);
 
+        // Definizione del comportamento di base del modulo
+        // TOFIX
         this._checkButton.style.display = "none";
 
         this._checkButton.addEventListener('click', e => {
@@ -141,29 +170,33 @@ export class ClockCAPTCHAView {
     }
 
     /**
-     * 
+     * Trigger dell'animazione di caricamento della canvas
      */
-    private waiting() : void{
+    private waiting(): void {
         var ctx = this._canvas.getContext('2d'), spinnerVal = 0;
-        this._spinner = setInterval(()=>{
-            ctx.clearRect(0,0,this._canvas.width, this._canvas.height);
+        this._spinner = setInterval(() => {
+            ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
             ctx.textAlign = "center";
-            spinnerVal%3 == 0 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
+            spinnerVal % 3 == 0 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
             ctx.fillText('.', 40, 50);
-            spinnerVal%3 == 1 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
+            spinnerVal % 3 == 1 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
             ctx.fillText('.', 50, 50);
-            spinnerVal%3 == 2 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
+            spinnerVal % 3 == 2 ? ctx.font = "40px Verdana" : ctx.font = "30px Verdana";
             ctx.fillText('.', 60, 50);
             spinnerVal++;
         }, 114);
     }
-    private done() : void{
+
+    /**
+     * Terminazione dell'animazione di caricamento della canvas
+     */
+    private done(): void {
         clearTimeout(this._spinner);
     }
 
     private _token: string;
 
-    private _spinner : NodeJS.Timer;
+    private _spinner: NodeJS.Timer;
     public _canvas: HTMLCanvasElement = document.createElement('canvas');
     private _moduleBody: HTMLElement = document.createElement('div');
     private _checkButton: HTMLButtonElement = document.createElement('button');
