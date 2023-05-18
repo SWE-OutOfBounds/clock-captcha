@@ -13,7 +13,7 @@ export class ShapesDecorator extends HTMLCanvasDecorator{
         this._shapePresence = shapePresence;
     }
     /**
-     * Data un immagine in formato stringa ci applica sopra del disturbo sottoforma di forme geometrice di ranodmica forma e misura
+     * Data un immagine in formato stringa ci applica sopra del disturbo sottoforma di forme geometriche di ranodmica forma e misura
      * @param hours : Ore
      * @param minutes : Minuti
      * @returns Immgine in formato stringa
