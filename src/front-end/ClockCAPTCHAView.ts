@@ -13,14 +13,13 @@ export class ClockCAPTCHAView {
    * Aggiunge il corpo del modulo al contenitore specificato.
    *
    * @param {HTMLElement | null} container - Il contenitore a cui aggiungere il corpo del modulo.
-   * @returns {boolean} true se l'iniezione è avvenuta con successo, false altrimenti.
+   * @returns {void} true se l'iniezione è avvenuta con successo, false altrimenti.
    */
-  public inject(container: HTMLElement | null): boolean {
+  public inject(container: HTMLElement | null): void {
     if (container) {
       container.innerHTML = "";
       container.appendChild(this._moduleBody);
-    } else return false;
-    return true;
+    } else throw new Error("Container not provided!");
   }
 
   /**
@@ -29,6 +28,8 @@ export class ClockCAPTCHAView {
    * @returns {String} seed generato dal modulo
    */
   public getToken(): string {
+    if (!this._token || this._token == "")
+      throw new Error("Token field is empty!");
     return this._token;
   }
 
@@ -47,6 +48,7 @@ export class ClockCAPTCHAView {
    * @param {string} err contenuto del messaggio
    */
   public error(err: string): void {
+    if (err == "") throw new Error("Void message provided.");
     this._title.style.color = "red";
     this._title.innerHTML = err;
   }
@@ -67,6 +69,7 @@ export class ClockCAPTCHAView {
    * @param {string} msg - Messaggio da visualizzare.
    */
   public message(msg: string): void {
+    if (msg == "") throw new Error("Void message provided.");
     this._title.innerHTML = msg;
   }
 
@@ -79,6 +82,8 @@ export class ClockCAPTCHAView {
   public fill(image_src: string, token: string): void {
     //TODO : check if image_src is consistent
     // Invocazione del metodo "done"
+    if (!image_src || image_src == "" || !token || token == "")
+      throw new Error("Void image_src or token provided!");
     this.done();
 
     // Impostazione del token
