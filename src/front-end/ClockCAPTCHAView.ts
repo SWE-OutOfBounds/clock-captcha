@@ -60,6 +60,7 @@ export class ClockCAPTCHAView {
    */
   public clear(): void {
     this.waiting();
+    this._token = "";
     this._input.value = "";
     this._title.style.color = "white";
     this._title.textContent = "Tell the time!";
@@ -96,7 +97,7 @@ export class ClockCAPTCHAView {
     context?.clearRect(0, 0, this._canvas.width, this._canvas.height);
 
     // Creazione di un nuovo oggetto "Image" e assegnazione della sorgente dell'immagine
-    const destinationImage = new Image();
+    const destinationImage = document.createElement("img");
     destinationImage.src = image_src;
 
     // Definizione della funzione da eseguire quando l'immagine è stata caricata
