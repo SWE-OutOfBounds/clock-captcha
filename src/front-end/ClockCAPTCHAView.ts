@@ -30,7 +30,9 @@ export class ClockCAPTCHAView {
   public getToken(): string {
     if (!this._token || this._token == "")
       throw new Error("Token field is empty!");
-    return this._token;
+    let aux = this._token;
+    this._token = "";
+    return aux;
   }
 
   /**
@@ -131,6 +133,22 @@ export class ClockCAPTCHAView {
 
     this._moduleBody.appendChild(this._canvas);
     this._moduleBody.appendChild(rightColumn);
+
+    this._input.addEventListener("input", () => {
+      const allowedCharacters = "0123456789:"; // You can add any other character in the same way
+      this._input.value = this._input.value
+        .split("")
+        .filter((char) => allowedCharacters.includes(char))
+        .join("");
+      let pattern = /^(0?[1-9]|[0-1][0-2]):[0-5][0-9]$/;
+      if (this._input.value.length > 0) {
+        if (pattern.test(this._input.value))
+          this._input.style.borderColor = "white";
+        else this._input.style.borderColor = "yellow";
+      } else {
+        this._input.style.borderColor = "white";
+      }
+    });
   }
 
   /**
