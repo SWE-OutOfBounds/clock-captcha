@@ -47,7 +47,7 @@ export class ClockCAPTCHAView {
    * @param {string} err contenuto del messaggio
    */
   public error(err: string): void {
-    this._title.style.color = "red";
+    this._title.style.color = "#FFF900";
     this._title.innerHTML = err;
   }
 
