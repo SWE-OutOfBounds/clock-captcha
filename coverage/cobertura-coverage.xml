@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage lines-valid="236" lines-covered="208" line-rate="0.8813" branches-valid="69" branches-covered="46" branch-rate="0.6666" timestamp="1684921418038" complexity="0" version="0.1">
+<coverage lines-valid="236" lines-covered="208" line-rate="0.8813" branches-valid="69" branches-covered="46" branch-rate="0.6666" timestamp="1684921560403" complexity="0" version="0.1">
   <sources>
     <source>/home/dipo/Documents/SWE/MVP/clock-captcha</source>
   </sources>
@@ -14,9 +14,9 @@
                 <line number="2" hits="2"/>
               </lines>
             </method>
-            <method name="(anonymous_1)" hits="169" signature="()V">
+            <method name="(anonymous_1)" hits="551" signature="()V">
               <lines>
-                <line number="5" hits="169"/>
+                <line number="5" hits="551"/>
               </lines>
             </method>
             <method name="(anonymous_2)" hits="4" signature="()V">
@@ -42,7 +42,7 @@
           </methods>
           <lines>
             <line number="2" hits="7" branch="false"/>
-            <line number="5" hits="174" branch="false"/>
+            <line number="5" hits="556" branch="false"/>
             <line number="6" hits="9" branch="false"/>
             <line number="7" hits="12" branch="false"/>
             <line number="8" hits="6" branch="false"/>
@@ -60,9 +60,9 @@
                 <line number="19" hits="3"/>
               </lines>
             </method>
-            <method name="(anonymous_1)" hits="164" signature="()V">
+            <method name="(anonymous_1)" hits="546" signature="()V">
               <lines>
-                <line number="44" hits="164"/>
+                <line number="44" hits="546"/>
               </lines>
             </method>
           </methods>
@@ -74,11 +74,11 @@
             <line number="22" hits="2" branch="false"/>
             <line number="23" hits="2" branch="true" condition-coverage="50% (2/4)"/>
             <line number="24" hits="2" branch="false"/>
-            <line number="45" hits="164" branch="true" condition-coverage="100% (3/3)"/>
-            <line number="46" hits="163" branch="true" condition-coverage="100% (5/5)"/>
-            <line number="47" hits="158" branch="true" condition-coverage="50% (1/2)"/>
-            <line number="48" hits="158" branch="true" condition-coverage="50% (1/2)"/>
-            <line number="49" hits="158" branch="false"/>
+            <line number="45" hits="546" branch="true" condition-coverage="100% (3/3)"/>
+            <line number="46" hits="545" branch="true" condition-coverage="100% (5/5)"/>
+            <line number="47" hits="540" branch="true" condition-coverage="50% (1/2)"/>
+            <line number="48" hits="540" branch="true" condition-coverage="50% (1/2)"/>
+            <line number="49" hits="540" branch="false"/>
             <line number="51" hits="5" branch="true" condition-coverage="100% (1/1)"/>
             <line number="52" hits="2" branch="true" condition-coverage="100% (1/1)"/>
             <line number="53" hits="0" branch="true" condition-coverage="0% (0/1)"/>
@@ -257,12 +257,12 @@
             <line number="46" hits="10" branch="false"/>
             <line number="47" hits="10" branch="false"/>
             <line number="49" hits="10" branch="true" condition-coverage="100% (3/3)"/>
-            <line number="51" hits="2" branch="false"/>
-            <line number="52" hits="2" branch="false"/>
-            <line number="54" hits="4" branch="false"/>
-            <line number="55" hits="4" branch="false"/>
-            <line number="56" hits="4" branch="false"/>
-            <line number="57" hits="4" branch="false"/>
+            <line number="51" hits="1" branch="false"/>
+            <line number="52" hits="1" branch="false"/>
+            <line number="54" hits="5" branch="false"/>
+            <line number="55" hits="5" branch="false"/>
+            <line number="56" hits="5" branch="false"/>
+            <line number="57" hits="5" branch="false"/>
             <line number="59" hits="1" branch="false"/>
             <line number="60" hits="1" branch="false"/>
             <line number="61" hits="1" branch="false"/>

@@ -41,17 +41,9 @@ describe("NoiseDecorator unit tests", () => {
       };
       expect(wrap).toThrow(Error);
     });
-  });
-  it("Chiamata su oggetto con parametro ben formato ritorna string", () => {
-    expect(tested.getToken()).toEqual(expect.any(String));
-  });
-  it("Chiamata consecutiva lancia eccezzione, funzione pulisce il token prima di restituirlo", () => {
-    const wrap = () => {
-      tested.getToken();
-    };
-    expect(wrap).toThrow(Error);
-    // Reset tested
-    tested.fill("image", "token");
+    it("Chiamata su oggetto con parametro ben formato ritorna string", () => {
+      expect(tested.getToken()).toEqual(expect.any(String));
+    });
   });
 
   describe("Funzionamento della funzione getInput()", () => {
@@ -67,7 +59,6 @@ describe("NoiseDecorator unit tests", () => {
       };
       expect(wrap).toThrow(Error);
     });
-    it("Chiamata con elemento ");
   });
 
   describe("Funzionamento della funzione error()", () => {

@@ -28,11 +28,10 @@ export class ClockCAPTCHAView {
    * @returns {String} seed generato dal modulo
    */
   public getToken(): string {
+    console.log(this._token);
     if (!this._token || this._token == "")
       throw new Error("Token field is empty!");
-    let aux = this._token;
-    this._token = "";
-    return aux;
+    return this._token;
   }
 
   /**
