@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2015",
+    "target": "es2018",
     "declaration": true,
     "outDir": "./dist"
   },
   "include": [
-    "src/**/*"
-  ]
+    "src/**/*",
+    "src/index.ts"],
+  "typeAcquisition": {
+    "include": [
+      "jest"
+    ]
+  },
 }
