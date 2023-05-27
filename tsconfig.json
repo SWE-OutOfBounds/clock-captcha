@@ -5,12 +5,8 @@
     "declaration": true,
     "outDir": "./dist"
   },
-  "include": [
-    "src/**/*",
-    "src/index.ts"],
+  "include": ["src/**/*", "src/index.ts"],
   "typeAcquisition": {
-    "include": [
-      "jest"
-    ]
+    "include": ["jest"]
   }
 }
