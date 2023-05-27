@@ -38,8 +38,8 @@ export class ClockCAPTCHA{
      * @throws Error :
      *                  - Missing token: campo token non presente nell'oggetto data
      *                  - Missing input: campo input non presente nell'oggetto data
-     *                  - Too manu arguments in object: presenti più campi dati di quelli necessari(token, input)
-     *                  - Invalid password format. : Ricevuta password vuota
+     *                  - Too many arguments in object: presenti più campi dati di quelli necessari(token, input)
+     *                  - Invalid password format: ricevuta password vuota
      */
     static validateData(data: Object, psw: string): boolean {
         if(psw == "" || psw.length == 0) throw Error("Invalid password format.")
