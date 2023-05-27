@@ -140,6 +140,9 @@ export class ClockCAPTCHAView {
         })
     }
 
+    /**
+     * 
+     */
     private waiting() : void{
         var ctx = this._canvas.getContext('2d'), spinnerVal = 0;
         this._spinner = setInterval(()=>{

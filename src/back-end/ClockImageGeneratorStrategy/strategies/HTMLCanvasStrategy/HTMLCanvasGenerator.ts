@@ -11,6 +11,8 @@ export class HTMLCanvasGenerator implements HTMLCanvasStrategy{
      * @returns Immgine in formato stringa
      */
     public generate(hours: number, minutes: number): string {
+        if(hours<0 || hours>11) throw Error("Invalid hours format.");
+        if(minutes<0 || minutes>59) throw Error("Invalid minutes format.");
         const aux = Canvas.createCanvas(100, 100);
         let ctx = aux.getContext('2d');
 
